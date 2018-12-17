@@ -1,5 +1,45 @@
+<% if(theme.banner.enable){ %>
 <nav id="mobile-nav">
   <% for (var i in theme.menu){ %>
     <a href="<%- url_for(theme.menu[i]) %>" class="mobile-nav-link"><%= i %></a>
   <% } %>
 </nav>
+<% } else { %>
+<nav id="mobile-nav" class="nav-wrap">
+  <ul class="nav-ul">
+  <% for(let link of theme.nav){ %>
+       
+          <% if(!link.children) { %>
+
+            <a 
+              href="<%- url_for(link.path) %>"
+              target="<%- link.blank ? '_blank' : '_self' %>"
+            >
+             <li class="nav-item" data-path="<%- link.path %>">
+              	<%- link.name %>
+              </li>
+            </a>
+          <% } else { %>
+            <a href="javascript:void(0);" v-else><%- link.name %></a>
+            <li class="nav-item" data-path="<%- link.path %>">
+	            <ul class="nav-menu--dropdown">
+	              <% for(let childrenLink of link.children){ %>
+	  
+	                  <a 
+	                    href="<%- url_for(childrenLink.path)%>" 
+	                    target="<%- childrenLink.blank ? '_blank' : '_self' %>"
+	                  >
+	                   <li>
+	                    <%- childrenLink.name %>
+	                    </li>
+	                  </a>
+	                
+	              <% } %>
+	            </ul>
+             </li>
+          <% } %>
+       
+      <% } %>
+  </ul>
+</nav>	
+<% } %>
